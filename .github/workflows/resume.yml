@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
-
     
     # - name: Install dependencies
     #   run: npm install  # or your build commands
@@ -21,17 +19,17 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1
       with:
-        host: ${{ secrets.EC2_HOST }}  # Must reference a secret, not direct IP
-        username: ${{ secrets.EC2_USER }}  # Must reference a secret
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         # passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }} # If key has passphrase
         script: |
-          # Setup SSH environment
+          # Setup SSH environment for GitHub
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           touch ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           
           # Create directory if it doesn't exist
           sudo mkdir -p /var/www/html/portfolio
@@ -40,11 +38,16 @@ jobs:
           sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /var/www/html/portfolio
           sudo chmod -R 755 /var/www/html/portfolio
           
-          # Initialize git repo if not already initialized
+          # Configure Git and deploy using HTTPS to avoid SSH issues
           cd /var/www/html/portfolio
+          
+          # Initialize git repo if not already initialized
           if [ ! -d .git ]; then
             git init
-            git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+            git remote add origin https://github.com/${{ github.repository }}.git
+          else
+            # Update remote if it exists but might be incorrect
+            git remote set-url origin https://github.com/${{ github.repository }}.git
           fi
           
           # Configure Git
@@ -52,7 +55,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           
-          # Git operations
+          # Git operations - using HTTPS instead of SSH
           git fetch --all
           git reset --hard origin/main
           git pull origin main
