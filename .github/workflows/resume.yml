@@ -23,7 +23,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}  # Must reference a secret
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /var/www/portfolio
+          cd /var/www/html/portfolio
           git pull origin main
           #npm install --production
           #pm2 restart all  # or your restart command
