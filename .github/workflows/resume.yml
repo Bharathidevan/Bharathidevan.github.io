@@ -22,7 +22,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}  # Must reference a secret, not direct IP
         username: ${{ secrets.EC2_USER }}  # Must reference a secret
         key: ${{ secrets.EC2_SSH_KEY }}
-        passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }} # If key has passphrase
+        # passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }} # If key has passphrase
         script_strict: false # Disables strict host key checking
         script: |
           # Setup SSH environment
