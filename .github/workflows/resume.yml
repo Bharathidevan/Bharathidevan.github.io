@@ -24,6 +24,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /var/www/html/portfolio
+          git config --global --add safe.directory /var/www/html/portfolio
           git pull origin main
           #npm install --production
           #pm2 restart all  # or your restart command
