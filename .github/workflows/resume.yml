@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # - name: Install dependencies
+    #   run: npm install  # or your build commands
+      
+    # - name: Build project
+    #   run: npm run build
+      
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.EC2_HOST }}  # Must reference a secret, not direct IP
+        username: ${{ secrets.EC2_USER }}  # Must reference a secret
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /var/www/html/portfolio
+          git config --global --add safe.directory /var/www/html/portfolio
+          git pull origin main
+          #npm install --production
+          #pm2 restart all  # or your restart command
