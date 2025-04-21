@@ -51,9 +51,9 @@ jobs:
           # fi
           
           # Configure Git
-          git config --global --add safe.directory /var/www/html/portfolio
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          # git config --global --add safe.directory /var/www/html/portfolio
+          # git config --global user.name "GitHub Actions"
+          # git config --global user.email "actions@github.com"
           
           # Git operations - using HTTPS instead of SSH
           git fetch --all
