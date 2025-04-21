@@ -42,13 +42,13 @@ jobs:
           cd /var/www/html/portfolio
           
           # Initialize git repo if not already initialized
-          if [ ! -d .git ]; then
-            git init
-            git remote add origin https://github.com/${{ github.repository }}.git
-          else
-            # Update remote if it exists but might be incorrect
-            git remote set-url origin https://github.com/${{ github.repository }}.git
-          fi
+          # if [ ! -d .git ]; then
+          #   git init
+          #   git remote add origin https://github.com/${{ github.repository }}.git
+          # else
+          #   # Update remote if it exists but might be incorrect
+          #   git remote set-url origin https://github.com/${{ github.repository }}.git
+          # fi
           
           # Configure Git
           git config --global --add safe.directory /var/www/html/portfolio
